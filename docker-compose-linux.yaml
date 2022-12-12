@@ -24,7 +24,7 @@ services:
             - 8388:8388/tcp
             - 8388:8388/udp
         volumes:
-            - ~/Docker/SSV2/v2ray-plugin:/etc/v2ray-plugin
+            - ~/Docker/SSV2/v2ray-plugin:/etc/shadowsocks-rust/v2ray-plugin
             - ~/Docker/SSV2/config.json:/etc/shadowsocks-rust/config.json
             - ~/Docker/SSV2/nord.im.key:/etc/shadowsocks-rust/nord.im.key
             - ~/Docker/SSV2/nord.im.pem:/etc/shadowsocks-rust/nord.im.pem
