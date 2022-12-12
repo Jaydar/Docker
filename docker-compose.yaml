@@ -24,10 +24,10 @@ services:
             - 8388:8388/tcp
             - 8388:8388/udp
         volumes:
-            - /d/SSV/SSV2/v2ray-plugin:/etc/v2ray-plugin
-            - /d/SSV/SSV2/config.json:/etc/shadowsocks-rust/config.json
-            - /d/SSV/SSV2/nord.im.key:/etc/shadowsocks-rust/nord.im.key
-            - /d/SSV/SSV2/nord.im.pem:/etc/shadowsocks-rust/nord.im.pem
+            - /d/Docker/SSV2/v2ray-plugin:/etc/v2ray-plugin
+            - /d/Docker/SSV2/config.json:/etc/shadowsocks-rust/config.json
+            - /d/Docker/SSV2/nord.im.key:/etc/shadowsocks-rust/nord.im.key
+            - /d/Docker/SSV2/nord.im.pem:/etc/shadowsocks-rust/nord.im.pem
         depends_on:
             - Nginx
 networks:
