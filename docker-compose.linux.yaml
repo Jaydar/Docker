@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+
+    Nginx:
+        container_name: Nginx
+        image: nginx:stable
+        restart: always
+        ports:
+            - 80:80
+            - 443:443
+        volumes:
+            - ~/Docker/Nginx/etc:/etc/nginx
+            - ~/Docker/Nginx/html:/usr/share/nginx/html
+            - ~/Docker/Nginx/log:/var/log/nginx
+        networks:
+            default:
+                ipv4_address: 172.18.1.10
+
+    SSV2:
+        container_name: SSV2
+        image: ghcr.io/shadowsocks/ssserver-rust:latest
+        restart: always
+        ports:
+            - 8388:8388/tcp
+            - 8388:8388/udp
+        volumes:
+            - ~/Docker/SSV2/v2ray-plugin:/etc/v2ray-plugin
+            - ~/Docker/SSV2/config.json:/etc/shadowsocks-rust/config.json
+            - ~/Docker/SSV2/nord.im.key:/etc/shadowsocks-rust/nord.im.key
+            - ~/Docker/SSV2/nord.im.pem:/etc/shadowsocks-rust/nord.im.pem
+        depends_on:
+            - Nginx
+networks:
+    default:
+        # external: true
+        driver: bridge
+        ipam:
+            config:
+                - subnet: 172.18.1.0/24
