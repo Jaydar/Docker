@@ -1,9 +1,9 @@
 {
-    "server": "127.0.0.1",
+    "server": "0.0.0.0",
     "server_port": 8388,
     "password": "Jaydar@123.",
-    "timeout": 300,
+    "timeout": 7200,
     "method": "aes-256-gcm",
     "plugin": "/etc/shadowsocks-rust/v2ray-plugin",
-    "plugin_opts":"server;tls;host=127.0.0.1;path=/ssv2;mode=websocket;cert=/etc/shadowsocks-rust/nord.im.pem;key=/etc/shadowsocks-rust/nord.im.key"
+    "plugin_opts":"server;mode=websocket;tls;host=nord.im;path=/ssv2;cert=/etc/shadowsocks-rust/nord.im.pem;key=/etc/shadowsocks-rust/nord.im.key"
 }
