@@ -5,5 +5,5 @@
     "timeout": 300,
     "method": "aes-256-gcm",
     "plugin": "/etc/shadowsocks-rust/v2ray-plugin",
-    "plugin_opts":"server;tls;host=nord.im;path=/ssv2;mode=websocket;cert=/etc/shadowsocks-rust/nord.im.pem;key=/etc/shadowsocks-rust/nord.im.key"
+    "plugin_opts":"server;tls;host=127.0.0.1;path=/ssv2;mode=websocket;cert=/etc/shadowsocks-rust/nord.im.pem;key=/etc/shadowsocks-rust/nord.im.key"
 }
