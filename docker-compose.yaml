@@ -30,6 +30,9 @@ services:
             - ~/Docker/SSV2/nord.im.pem:/etc/shadowsocks-rust/nord.im.pem
         depends_on:
             - Nginx
+        networks:
+            default:
+                ipv4_address: 172.18.1.21
     NextCloud:
         container_name: NextCloud
         image: nextcloud
@@ -38,10 +41,13 @@ services:
             - 8080:80
         depends_on:
             - Nginx
+        networks:
+            default:
+                ipv4_address: 172.18.1.22
 networks:
     default:
         # external: true
         driver: bridge
         ipam:
             config:
-                - subnet: 172.18.1.0/24
+                - subnet: 172.18.1.0/50
