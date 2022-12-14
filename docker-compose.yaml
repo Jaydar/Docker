@@ -30,6 +30,11 @@ services:
             - ~/Docker/SSV2/nord.im.pem:/etc/shadowsocks-rust/nord.im.pem
         depends_on:
             - Nginx
+    NextCloud:
+        container_name: NextCloud
+        image: nextcloud
+        ports:
+            - 8080:80
 networks:
     default:
         # external: true
