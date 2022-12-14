@@ -33,8 +33,11 @@ services:
     NextCloud:
         container_name: NextCloud
         image: nextcloud
+        restart: always
         ports:
             - 8080:80
+        depends_on:
+            - Nginx
 networks:
     default:
         # external: true
