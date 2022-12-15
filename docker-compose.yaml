@@ -15,6 +15,9 @@ services:
         networks:
             default:
                 ipv4_address: 172.18.1.10
+        depends_on:
+            - SSV2
+            - NextCloud
 
     SSV2:
         container_name: SSV2
@@ -28,19 +31,16 @@ services:
             - ~/Docker/SSV2/config.json:/etc/shadowsocks-rust/config.json
             - ~/Docker/SSV2/nord.im.key:/etc/shadowsocks-rust/nord.im.key
             - ~/Docker/SSV2/nord.im.pem:/etc/shadowsocks-rust/nord.im.pem
-        depends_on:
-            - Nginx
         networks:
             default:
                 ipv4_address: 172.18.1.21
+                
     NextCloud:
         container_name: NextCloud
         image: nextcloud
         restart: always
         ports:
             - 8080:80
-        depends_on:
-            - Nginx
         networks:
             default:
                 ipv4_address: 172.18.1.22
