@@ -1,4 +1,5 @@
 # Nginx
+
+!Nginx/log/.gitkeep
 /Nginx/log
 
-!/Nginx/log/.gitkeep
