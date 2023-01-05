@@ -1,69 +1,143 @@
 version: "3.9"
 services:
 
-    Nginx:
-        container_name: Nginx
-        image: nginx:stable
-        restart: always
-        ports:
-            - 80:80
-            - 443:443
-        volumes:
-            - ~/Docker/Nginx/etc:/etc/nginx
-            - ~/Docker/Nginx/html:/usr/share/nginx/html
-            - ~/Docker/Nginx/log:/var/log/nginx
-        networks:
-            default:
-                ipv4_address: 172.18.1.10
-        depends_on:
-            - SSV2
-            - NextCloud
-    Etcd:
-        container_name: Etcd
-        image: bitnami/etcd:latest
-        restart: always
-        ports:
-            - 2379:2379
-            - 2380:2380
-        environment:
-            - ALLOW_NONE_AUTHENTICATION=yes
-            - ETCD_NAME=etcd-server
-            - ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380
-            - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
-            - ETCD_INITIAL_ADVERTISE_PEER_URLS=http://etcd-server:2380
-            - ETCD_ADVERTISE_CLIENT_URLS=http://etcd-server:2379
-        networks:
-            default:
-                ipv4_address: 172.18.1.11
-    SSV2:
-        container_name: SSV2
-        image: ghcr.io/shadowsocks/ssserver-rust:latest
-        restart: always
-        ports:
-            - 19899:19899/tcp
-            - 19899:19899/udp
-        volumes:
-            - ~/Docker/SSV2/v2ray-plugin:/etc/shadowsocks-rust/v2ray-plugin
-            - ~/Docker/SSV2/config.json:/etc/shadowsocks-rust/config.json
-            - ~/Docker/SSV2/nord.im.key:/etc/shadowsocks-rust/nord.im.key
-            - ~/Docker/SSV2/nord.im.pem:/etc/shadowsocks-rust/nord.im.pem
-        networks:
-            default:
-                ipv4_address: 172.18.1.21
-                
-    NextCloud:
-        container_name: NextCloud
-        image: nextcloud
-        restart: always
-        ports:
-            - 8080:80
-        networks:
-            default:
-                ipv4_address: 172.18.1.22
+  Nginx:
+    container_name: Nginx
+    image: nginx:stable
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ${DIR}/Nginx/etc:/etc/nginx
+      - ${DIR}/Nginx/html:/usr/share/nginx/html
+      - ${DIR}/Nginx/log:/var/log/nginx
+    networks:
+      default:
+        ipv4_address: 172.18.1.10
+      # depends_on:
+      # - SSV2
+      # - NextCloud
+
+  Mongo:
+    container_name: Mongo
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - MongoDB:/data/db
+      - MongoDB:/data/configdb
+    environment:
+      TZ: Asia/Shanghai
+      MONGO_INITDB_DATABASE: admin
+      MONGO_INITDB_ROOT_USERNAME: ${USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${PASSWORD}
+    networks:
+      default:
+        ipv4_address: 172.18.1.11
+
+  MySQL:
+    container_name: MySQL
+    image: mysql:5.7
+    ports:
+      - 3306:3306
+      - 33060:33060
+    volumes:
+      - MySQL:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${PASSWORD}
+    restart: always
+    networks:
+      default:
+        ipv4_address: 172.18.1.12
+
+  Redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+    container_name: Redis
+    volumes:
+      - Redis:/data
+    environment:
+      TZ: Asia/Shanghai
+    command: --requirepass ${PASSWORD}
+    restart: always
+    networks:
+      default:
+        ipv4_address: 172.18.1.13
+
+  Etcd:
+    container_name: Etcd
+    image: bitnami/etcd:latest
+    restart: always
+    ports:
+      - 2379:2379
+      - 2380:2380
+    environment:
+      ALLOW_NONE_AUTHENTICATION: yes
+      ETCD_NAME: etcd-server
+      ETCD_LISTEN_PEER_URLS: http://0.0.0.0:2380
+      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+      ETCD_INITIAL_ADVERTISE_PEER_URLS: http://etcd-server:2380
+      ETCD_ADVERTISE_CLIENT_URLS: http://etcd-server:2379
+    networks:
+      default:
+        ipv4_address: 172.18.1.14
+
+  MinIO:
+    image: bitnami/minio:latest
+    container_name: MinIO
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - MinIO:/data
+      - MinIO:/certs
+    environment:
+      MINIO_ROOT_USER: ${USERNAME}
+      MINIO_ROOT_PASSWORD: ${PASSWORD}
+    restart: always
+    networks:
+      default:
+        ipv4_address: 172.18.1.15
+  # SSV2:
+  #     container_name: SSV2
+  #     image: ghcr.io/shadowsocks/ssserver-rust:latest
+  #     restart: always
+  #     ports:
+  #         - 19899:19899/tcp
+  #         - 19899:19899/udp
+  #     volumes:
+  #         - ${DIR}/SSV2/v2ray-plugin:/etc/shadowsocks-rust/v2ray-plugin
+  #         - ${DIR}/SSV2/config.json:/etc/shadowsocks-rust/config.json
+  #         - ${DIR}/SSV2/nord.im.key:/etc/shadowsocks-rust/nord.im.key
+  #         - ${DIR}/SSV2/nord.im.pem:/etc/shadowsocks-rust/nord.im.pem
+  #     networks:
+  #         default:
+  #             ipv4_address: 172.18.1.21
+
+  # NextCloud:
+  #     container_name: NextCloud
+  #     image: nextcloud
+  #     restart: always
+  #     ports:
+  #         - 8080:80
+  #     networks:
+  #         default:
+  #             ipv4_address: 172.18.1.22
+
+volumes:
+  MongoDB:
+  MySQL:
+  Redis:
+  MinIO:
+
+
 networks:
-    default:
-        # external: true
-        driver: bridge
-        ipam:
-            config:
-                - subnet: 172.18.1.0/24
+  default:
+    # external: true
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.1.0/24
