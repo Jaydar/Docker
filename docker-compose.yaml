@@ -89,8 +89,8 @@ services:
     image: bitnami/minio:latest
     container_name: MinIO
     ports:
-      - '9000:9000'
-      - '9001:9001'
+      - 9000:9000
+      - 9001:9001
     volumes:
       - MinIO:/data
       - MinIO:/certs
