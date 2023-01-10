@@ -101,31 +101,32 @@ services:
     networks:
       default:
         ipv4_address: 172.18.1.15
-  # SSV2:
-  #     container_name: SSV2
-  #     image: ghcr.io/shadowsocks/ssserver-rust:latest
-  #     restart: always
-  #     ports:
-  #         - 19899:19899/tcp
-  #         - 19899:19899/udp
-  #     volumes:
-  #         - ${DIR}/SSV2/v2ray-plugin:/etc/shadowsocks-rust/v2ray-plugin
-  #         - ${DIR}/SSV2/config.json:/etc/shadowsocks-rust/config.json
-  #         - ${DIR}/SSV2/nord.im.key:/etc/shadowsocks-rust/nord.im.key
-  #         - ${DIR}/SSV2/nord.im.pem:/etc/shadowsocks-rust/nord.im.pem
-  #     networks:
-  #         default:
-  #             ipv4_address: 172.18.1.21
+        
+  SSV2:
+      container_name: SSV2
+      image: ghcr.io/shadowsocks/ssserver-rust:latest
+      restart: always
+      ports:
+          - 19899:19899/tcp
+          - 19899:19899/udp
+      volumes:
+          - ${DIR}/SSV2/v2ray-plugin:/etc/shadowsocks-rust/v2ray-plugin
+          - ${DIR}/SSV2/config.json:/etc/shadowsocks-rust/config.json
+          - ${DIR}/SSV2/nord.im.key:/etc/shadowsocks-rust/nord.im.key
+          - ${DIR}/SSV2/nord.im.pem:/etc/shadowsocks-rust/nord.im.pem
+      networks:
+          default:
+              ipv4_address: 172.18.1.21
 
-  # NextCloud:
-  #     container_name: NextCloud
-  #     image: nextcloud
-  #     restart: always
-  #     ports:
-  #         - 8080:80
-  #     networks:
-  #         default:
-  #             ipv4_address: 172.18.1.22
+  NextCloud:
+      container_name: NextCloud
+      image: nextcloud
+      restart: always
+      ports:
+          - 8080:80
+      networks:
+          default:
+              ipv4_address: 172.18.1.22
 
 volumes:
   MongoDB:
